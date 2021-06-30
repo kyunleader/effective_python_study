@@ -11,10 +11,12 @@
 
 ## chapter. 1 파이썬 답게 생각하기
 
-  <li> <code>정리</code><a href = "https://github.com/nanocelebs/effective_python_study/blob/master/Chapter1%ED%8C%8C%EC%9D%B4%EC%8D%AC%20%EB%8B%B5%EA%B2%8C%20%EC%83%9D%EA%B0%81%ED%95%98%EA%B8%B0.md"> 파이썬 답게 생각하기 </a>
+  <li> <code>정리</code><a href = "https://github.com/nanocelebs/effective_python_study/blob/master/Chapter1%ED%8C%8C%EC%9D%B4%EC%8D%AC%20%EB%8B%B5%EA%B2%8C%20%EC%83%9D%EA%B0%81%ED%95%98%EA%B8%B0.md"> 파이썬 답게 생각하기 </a></il>
 
 
+## chapter. 2 리스트와 딕셔너리
 
+  <li> <code>정리</code><a href = "https://github.com/nanocelebs/effective_python_study/blob/master/Chapter2%EB%A6%AC%EC%8A%A4%ED%8A%B8%EC%99%80%EB%94%95%EC%85%94%EB%84%88%EB%A6%AC.md"> 리스트와 딕셔너리 </a>
 
 
 
