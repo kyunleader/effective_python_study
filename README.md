@@ -11,7 +11,7 @@
 
 ## chapter. 1 파이썬 답게 생각하기
 
-#### 배울 내용
+  <li> <code>정리</code><a href = "https://github.com/nanocelebs/effective_python_study/blob/master/Chapter1%ED%8C%8C%EC%9D%B4%EC%8D%AC%20%EB%8B%B5%EA%B2%8C%20%EC%83%9D%EA%B0%81%ED%95%98%EA%B8%B0.md"> 파이썬 답게 생각하기 </a>
 
 
 
