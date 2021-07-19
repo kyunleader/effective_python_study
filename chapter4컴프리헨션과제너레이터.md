@@ -225,6 +225,68 @@ assert sum(percentages) == 100.0
   Better way 32. 긴 리스트 컴프리헨션보다는 제너레이터 식을 사용하라
   </h2> 
 
+<a> 입력이크면 메모리를 너무 많이 사용하기 때문에 리스트 컴프리헨션은 문제를 일으킬 수 있다. 하지만 제너레이터 식은 이터레이터처럼 한 번에 원소를 하나씩 출력하기 때문에 메모리 문제를 피할 수 있다. 또한 제너레이터 식이 반환한 이터레이터를 다른 제너레이터 식의 하위 식으로 사용함으로써 제너레이터 식을 서로 합성할 수 있다. 서로 연결된 제너레이터 식은 매우 빠르게 실행되며 메모리도 효율적으로 사용한다.</a>
 
 
+<a name="7"> </a>
 
+ <h2>
+  Better way 33. yield from을 사용해 여러 제너레이터를 합성하라
+  </h2> 
+  
+  <a>yield from 식을 사용하면 여러 내장 제너레이터를 모아서 제너레이터 하나로 합성할 수 있다. 또한 성능도 제너레이터를 사용하는 것보다 좋다.  </a>
+  
+  ```python
+  # 예) 화면의 이미지를 움직이게하는 프로그램 작성
+#
+def move(period, speed):
+    for _ in range(period):
+        yield speed
+
+#
+def pause(delay):
+    for _ in range(delay):
+        yield 0
+
+# 단순 yield를 사용한 것
+def animate():
+    for delta in move(4, 5.0):
+        yield delta
+    for delta in pause(3):
+        yield delta
+    for delta in move(2, 3.0):
+        yield delta
+# 결과
+def render(delta):
+    print(f'Delta: {delta:.1f}')
+    # 화면에서 이미지를 이동시킨다
+
+def run(func):
+    for delta in func():
+        render(delta)
+
+run(animate)
+
+
+# yield from 을 사용한 것
+def animate_composed():
+    yield from move(4, 5.0)
+    yield from pause(3)
+    yield from move(2, 3.0)
+
+
+run(animate_composed)
+
+
+  ```
+
+
+<a name="8"> </a>
+
+ <h2>
+  Better way 34. send로 제너레이터에 데이터를 주입하지 말라
+  </h2> 
+
+<a>  send 메서드를 사용해 데이터를 제너레이터에 주입할 수 있지만, send와 yield from 식을 함께 사용하면 제너레이터의 출력에 None이 불쑥불쑥 나타나는 이외의 결과를 얻을 수도 있다. </a>
+
+<a>  합성할 제너레이터들의 입력으로 이터레이터를 전달하는 방식이 send를 사용하는 방식보다 더 낫다. send는 가급적 사용하지 말라. </a>
