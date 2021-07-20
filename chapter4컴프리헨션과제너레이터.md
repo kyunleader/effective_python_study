@@ -290,3 +290,163 @@ run(animate_composed)
 <a>  send 메서드를 사용해 데이터를 제너레이터에 주입할 수 있지만, send와 yield from 식을 함께 사용하면 제너레이터의 출력에 None이 불쑥불쑥 나타나는 이외의 결과를 얻을 수도 있다. </a>
 
 <a>  합성할 제너레이터들의 입력으로 이터레이터를 전달하는 방식이 send를 사용하는 방식보다 더 낫다. send는 가급적 사용하지 말라. </a>
+
+```python
+# send 사용 예
+
+it = iter(my_generator())
+output = it.send(None)     # 첫 번째 제너레이터 출력을 얻는다
+print(f'출력값 = {output}')
+
+try:
+    it.send('안녕!')    # 값을 제너레이터에 넣는다
+except StopIteration:
+    pass
+```
+
+<a name="9"> </a>
+
+ <h2>
+  Better way 35. 제너레이터 안에서 throw로 상태를 변화시키지 말라
+  </h2> 
+  
+ <a> throw 메서드를 사용하면 제너레이터가 마지막으로 실행한 yield 식의 위치에서 예외를 다시 발생시킬 수 있다. 하지만 throw 사용시 가독성이 나빠진다. 예외를 잡아내고 다시 발생기키는 데 준비 코드가 필요하며 내포단계가 깊어지기 때문이다. </a>
+ 
+ <a> 제너레이터에서 예외적인 동작을 제공하는 더 나은 방법은 __iter__메서드를 구현하는 클래스를 사용하면서 예외적인 경우에 상태를 전이시키는 것이다. </a> 
+ 
+ ```python
+ # throw 간단 예제
+ 
+ def my_generator():
+    yield 1
+    try:
+        yield 2
+    except MyError:
+        print('MyError 발생!')
+    else:
+        yield 3
+    yield 4
+
+it = my_generator()
+print(next(it))  # 1을 내놓음
+print(next(it))  # 2를 내놓음
+print(it.throw(MyError('test error')))
+
+ ```
+  
+```python
+# throw와 __iter__ 메소드 비교
+
+# 작성하는 프로그램에 간헐적으로 재설정할 수 있는 타이머 
+
+#1. throw를 이용한 코드
+class Reset(Exception):
+    pass
+
+def timer(period):
+    current = period
+    while current:
+        current -= 1
+        try:
+            yield current
+        except Reset:
+            current = period
+
+#
+RESETS = [
+    False, False, False, True, False, True, False,
+    False, False, False, False, False, False, False]
+
+def check_for_reset():
+    # 외부 이벤트를 폴링한다
+    return RESETS.pop(0)
+
+def announce(remaining):
+    print(f'{remaining} 틱 남음')
+
+def run():
+    it = timer(4)
+    while True:
+        try:
+            if check_for_reset():
+                current = it.throw(Reset())
+            else:
+                current = next(it)
+        except StopIteration:
+            break
+        else:
+            announce(current)
+
+# 2. __iter__이용한 코드
+class Timer:
+    def __init__(self, period):
+        self.current = period
+        self.period = period
+
+    def reset(self):
+        self.current = self.period
+
+    def __iter__(self):
+        while self.current:
+            self.current -= 1
+            yield self.current
+
+#
+def run():
+    timer = Timer(4)
+    for current in timer:
+        if check_for_reset():
+            timer.reset()
+        announce(current)
+        
+# __iter__를 사용한 코드가 더 가독성이 좋다.
+
+```
+  
+<a name="10"> </a>
+
+ <h2>
+  Better way 36. 이터레이터나 제너레이터를 다룰 때는 itertools를 사용하라
+  </h2> 
+  
+  <a> itertools 내장 모듈에는 이터레이터를 조직화하거나 사용할 때 쓸모있는 여러함수가 들어있다. </a>
+  
+  ```python 
+  # 대표적인 itertools 함수들
+  
+#
+import itertools
+
+# 합치기
+it = itertools.chain([1, 2, 3], [4, 5, 6])
+print(list(it))
+
+# 반복
+it = itertools.repeat('안녕', 3)
+print(list(it))
+
+# 특정원소 반복
+it = itertools.cycle([1, 2])
+result = [next(it) for _ in range (10)]
+print(result)
+
+# 병렬적으로 만들고 싶을때
+it1, it2, it3 = itertools.tee(['하나', '둘'], 3)
+print(list(it1))
+print(list(it2))
+print(list(it3))
+
+# zip함수의 변종으로 한쪽이 원소가 부족한 경우 빈칸을 채워준다. fillvalue
+keys = ['하나', '둘', '셋']
+values = [1, 2]
+
+normal = list(zip(keys, values))
+print('zip:', normal)
+
+it = itertools.zip_longest(keys, values, fillvalue='없음')
+longest = list(it)
+print('zip_longest:', longest)
+
+# 더 많은 함수 알아보기
+ help(itertools)
+  ```
