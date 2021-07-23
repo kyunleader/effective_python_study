@@ -9,9 +9,9 @@
 - [Better way 34. send로 제너레이터레 데이터를 주입하지 말라](#8)
 - [Better way 35. 제너레이터 안에서 throw로 상태를 변화시키지 말라](#9)
 - [Better way 36. 이터레이터나 제너레이터를 다룰 때는 itertools를 사용하라](#10)
-- [문제](#8)
-- [문제풀이](#9)
-- [추가자료](#10)
+- [문제](#11)
+- [문제풀이](#12)
+- [추가자료](#13)
 
 <h1> chapter 4. 컴프리헨션과 제너레이터 </h1>
 <blockquote>
@@ -450,3 +450,98 @@ print('zip_longest:', longest)
 # 더 많은 함수 알아보기
  help(itertools)
   ```
+
+<a name="11"> </a>
+
+ <h2>
+  연습문제
+  </h2> 
+
+```python
+# 문제 1. 리스트를 반환하지말고 제너레이터로 사용하라
+def get_even_number(num_list:list):
+    return_list = []
+    for num in num_list:
+        if num % 2 == 0:
+            return_list.append(num)
+        else:
+            pass
+
+    return return_list
+
+
+# 문제 2. animate() 함수를 yield from 문을 사용하여 개선시켜라
+# animate() 함수를 yield from 문을 사용하여 개선시켜라
+def animate():
+    for delta in move(4, 5.0):
+        yield delta
+    for delta in pause(3):
+        yield delta
+    for delta in move(2, 3.0):
+        yield delta
+
+def render(delta):
+    print(f'Delta: {delta:.1f}')
+    # 화면에서 이미지를 이동시킨다
+
+def run(func):
+    for delta in func():
+        render(delta)
+
+run(animate_composed)
+
+
+# 문제 3. 다음 for문을 컴프리헨션으로 바꿔보자
+
+q1 = list(range(1,11))
+ans = []
+for i in q1:
+    if i % 2 == 0:
+        ans.append(i**2)   # 짝수만을 가져와서 제곱하는 for 문
+print(ans)
+
+
+# 문제 4. 다음 함수를 yield from을 활용해서 더 간단하게 바꿔보자
+
+def quiz2():
+    ans2 = []
+    for i in range(0,7):
+        ans2.append(i)
+    for i in range(3,9):
+        ans2.append(i)
+    return ans2
+quiz2()
+
+
+# 문제 5.6.
+food = ['rice_cake', 'chicken', 'salad']
+
+# 음식의 칼로리를 구하는 함수
+def get_food_calrories(food):
+    result = []
+    for f in food:
+        # 칼로리를 구하는 함수라고 가정하자
+        calories = len(f)*77/3
+        result.append(calories)
+    return result
+
+# 문제 5. get_food_calrories함수를 get_food_calrories_ gen라는 제너레이터로 함수로 바꿔라.
+# 문제 6. get_food_calrories_gen함수를 두 번 호출하면 어떤 결과가 나올고 그 이유는?
+it = get_food_calrories_gen(food)
+print(list(it)) 
+print(list(it)) # 이때 결과값은?
+
+# 문제 7. 이터레이터 프로토콜을 구현해 새로운 컨테이너 클래스를 작성해 2의 문제를 해결해보라
+class FoodIter:
+    def __init__(self,food_list):
+        self.plates = food_list 
+    def __iter__(self):
+        #코드 작성 
+food = FoodIter(food) ################### 수정!!!!
+cal=get_food_calrories(food)
+print(cal) # 제대로 출력이 된다!
+print(cal) # 제대로 출력이 된다!
+
+```
+
+
