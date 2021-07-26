@@ -545,3 +545,93 @@ print(cal) # 제대로 출력이 된다!
 ```
 
 
+
+
+<a name="12"> </a>
+
+ <h2>
+  연습문제풀이 
+  </h2> 
+
+
+ ```python
+ 
+ # 문제 1. 답
+ def get_even_number(num_list:list):
+    for num in num_list:
+        if num % 2 == 0:
+            yield num
+        else:
+            pass
+ 
+ # 문제 2. 답
+ def animate_composed():
+    yield from move(4, 5.0)
+    yield from pause(3)
+    yield from move(2, 3.0)
+
+ def render(delta):
+    print(f'Delta: {delta:.1f}')
+    # 화면에서 이미지를 이동시킨다
+
+ def run(func):
+    for delta in func():
+        render(delta)
+
+ run(animate_composed)
+ 
+ 
+ # 문제 3. 답
+ ans = [i**2 for i in q1 if i % 2 == 0]
+ ans
+ 
+ 
+ # 문제 4. 답
+
+def append_list(a,b):
+    for i in range(a,b):
+        yield i
+        
+def quiz2_ans():
+    yield from append_list(0,7)
+    yield from append_list(3,9)
+
+list(quiz2_ans())
+ 
+ 
+ # 문제 5. 답
+ def get_food_calrories_gen(food):
+    result = []
+    for f in food:
+        #칼로리를 구하는 식이라고 치자
+        calories = len(f)*77/3
+        yield calories
+        
+    
+    
+ # 문제 6. 답
+ # 첫 번 째 print문에서만 정상 출력 되고 두 번째 출력문에서는 빈 리스트가 출력됨
+ # 이터레이션은 한번 호출 되면 소진된되므로 페이지 190부터 참고 
+
+
+ # 문제 7. 답
+ class FoodIter:
+    def __init__(self,food_list):
+        self.plates = food_list 
+    def __iter__(self):
+        # yield from self.plates
+        for food in self.plates:
+            yield food
+ 
+ ```
+
+
+<a name="13"> </a>
+
+ <h2>
+  추가자료 
+  </h2>
+
+
+[제너레이터와 이터레이터의 개념과 차이점](https://nirsa.tistory.com/118)
+
