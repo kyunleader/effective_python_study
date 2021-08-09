@@ -20,6 +20,13 @@
   <li> <code>정리</code><a href = "https://github.com/nanocelebs/effective_python_study/blob/master/Chapter2%EB%A6%AC%EC%8A%A4%ED%8A%B8%EC%99%80%EB%94%95%EC%85%94%EB%84%88%EB%A6%AC.md"> 리스트와 딕셔너리 </a>
 
 
+## chapter. 3 함수
 
-
+      
+      
+## chapter. 4 컴프리헨션과 제너레이터
+      
+      
+      
+## chapter. 5 클래스와 인터페이스
 
